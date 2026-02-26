@@ -1,0 +1,96 @@
+INSERT INTO `devdb`.`roles` (`id`, `name`) VALUES ('1', 'USER_ROLE');
+INSERT INTO `devdb`.`roles` (`id`, `name`) VALUES ('2', 'ADMIN_ROLE');
+
+INSERT INTO `devdb`.`users` (`id`, `name`, `password`, `username`) VALUES ('1', 'ramesh', 'ramesh', 'ramesh');
+INSERT INTO `devdb`.`users` (`id`, `name`, `password`, `username`) VALUES ('2', 'admin', 'admin', 'admin');
+
+INSERT INTO `devdb`.`user_role` (`user_id`, `role_id`) VALUES ('1', '1');
+INSERT INTO `devdb`.`user_role` (`user_id`, `role_id`) VALUES ('2', '2');
+
+POST:
+
+authorization-> Basic
+username:
+pwd:
+
+http://localhost:8081/v1/openAccount
+
+Body:
+
+{
+"AccountType":"HomeLoan",
+"OpeningDate":"2023-01-07",
+"Balance":2500
+}
+
+==================================================================================
+
+Get:
+
+curl --location --request GET 'localhost:8081/api/getAccountById/1' \
+--header 'Cookie: JSESSIONID=E0D3619E91F17969A0B6F0EB84890226'
+=================================================================================
+Post:
+
+curl --location --request POST 'http://localhost:8081/api/openAccount' \
+--header 'Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJyYW1lc2giLCJpYXQiOjE3NzIwNTE4NzEsImV4cCI6MTc3MjA1Mjc3MX0.1x7gMD6hvtZ3phgc5oxrZQHWbxhmWOFUX5LdwhLIgBb44SoXa3merWorYEQPxshp' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=E0D3619E91F17969A0B6F0EB84890226' \
+--data-raw '{
+"accountType":"Home Loan",
+"OpeningDate":"2023-01-07",
+"Balance":2500
+}'
+
+===============================================================================
+
+Login:
+
+curl --location --request POST 'localhost:8081/api/auth/login' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=E0D3619E91F17969A0B6F0EB84890226' \
+--data-raw '{
+    "username":"ramesh",
+    "password":"ramesh"
+}'
+
+==============================================================================
+
+Register:
+
+curl --location --request POST 'localhost:8082/api/auth/register' \
+--header 'Content-Type: application/json' \
+--header 'Cookie: JSESSIONID=A1A01F49CE11D79B3417AC0CDB03C51A' \
+--data-raw '{
+    "name":"Ramesh Majhee",
+    "username":"admin",
+    "password":"admin"
+
+}'
+
+==============================================================================
+
+
+use devdb;
+
+INSERT INTO `devdb`.`roles` (`id`, `name`) VALUES ('1', 'USER_ROLE');
+INSERT INTO `devdb`.`roles` (`id`, `name`) VALUES ('2', 'ADMIN_ROLE');
+commit;
+
+insert into account values(1,"saving" ,1000,STR_TO_DATE('25-02-2026', '%d-%m-%Y'));
+select u1_0.id,u1_0.name,u1_0.password,u1_0.username from users u1_0 where u1_0.username='admin';
+select r1_0.user_id,r1_1.id,r1_1.name from user_role r1_0 join roles r1_1 on r1_1.id=r1_0.role_id where r1_0.user_id=4;
+
+select * from  roles;
+select * from users;
+select * from user_role;
+select * from account;
+
+truncate table account;
+truncate table user_role;
+SET SQL_SAFE_UPDATES = 0;
+
+delete from users;
+delete from roles;
+commit;
+
